@@ -1,18 +1,15 @@
 <script setup>
-
-
 defineProps({
-    message: {
-        type: String
-       
-    },
-    status: {
-        type: String
-    },
+  status: [String, Number],
+  message: String,
+  pathMatch: [String, Array]
 });
 </script>
 
 <template>
-    <h1>{{ message }}</h1>
-    <p>{{ status }}</p>
+  <div>
+    <h1>Error {{ status }}</h1>
+    <p>{{ message }}</p>
+    <p v-if="pathMatch">Tried to access: {{ pathMatch }}</p>
+  </div>
 </template>

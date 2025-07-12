@@ -9,9 +9,9 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('/success', function (Request $request) {
-    return response()->json(['message' => 'Data loaded sucessfully.'], 200);
+    return response()->json(['message' => 'Data loaded sucessfully.'], 403);
 });
 
 Route::get('/error', function (Request $request) {
-    return response()->json(['message' => 'ERROR AXIOS'], 422);
+    return response()->json(['message' => 'ERROR AXIOS'], 403);
 });

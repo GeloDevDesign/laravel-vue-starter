@@ -18,18 +18,18 @@ const routes = [
         meta: { guest: true },
     },
     {
-        path: "/error/:status/:message",
+        path: "/error/:message/:status",
         name: "error",
         component: ErrorPage,
         props: true,
-
         meta: { guest: true },
     },
     {
         path: "/:pathMatch(.*)*",
         name: "not-found",
         component: ErrorPage,
-        props: { errorStatus: 404 },
+        props: { status: 404, message: "Page not found." },
+        meta: { guest: true },
     },
 ];
 

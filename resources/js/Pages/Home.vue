@@ -6,8 +6,12 @@ import { useApiRequest } from "@/Composables/useApiRequest";
 
 const { httpRequest, isLoading, data, error } = useApiRequest();
 
-onMounted(() => {
-    httpRequest("GET", "/sucess");
+const test = () => {
+    api.post("/sucess");
+};
+
+onMounted(async () => {
+    test();
 });
 </script>
 

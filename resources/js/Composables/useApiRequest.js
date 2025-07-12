@@ -1,32 +1,28 @@
-// composables/useApiRequest.js
-import { ref } from "vue";
+import { reactive } from "vue";
 import api from "@/Lib/axios";
 
 export function useApiRequest() {
-    const isLoading = ref(false);
-    const data = ref(null);
-    const error = ref(null);
+    const apiState = reactive({
+        isLoading: false,
+        data: null,
+        error: null,
+    });
 
-    const httpRequest = async (method = "GET", url, body = null) => {
-        isLoading.value = true;
-        error.value = null;
-        data.value = null;
+    const httpRequest = async (callback) => {
+        apiState.isLoading = true;
+        apiState.error = null;
+        apiState.data = null;
 
         try {
-            const response = await api.request({
-                url,
-                method,
-                data: body,
-            });
+            const response = await callback;
             console.log(response.data);
-            data.value = response.data?.data ?? response.data;
-         
+            apiState.data = response.data?.data ?? response.data;
         } catch (err) {
-            error.value = err;
+            apiState.error = err;
         } finally {
-            isLoading.value = false;
+            apiState.isLoading = false;
         }
     };
 
-    return { httpRequest, isLoading, data, error };
+    return { httpRequest, apiState };
 }

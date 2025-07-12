@@ -43,7 +43,11 @@ api.interceptors.response.use(
             localStorage.removeItem("token");
             router.push({
                 name: "error",
-                params: { status: status, message: message },
+
+                params: {
+                    status: status || 404,
+                    message: message || "Page not found.",
+                },
             });
         } else {
             toastAlert(message, "error");
