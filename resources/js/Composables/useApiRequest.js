@@ -7,6 +7,7 @@ export function useApiRequest() {
     const error = ref(null);
 
     const httpRequest = async (method = "GET", url, body = null) => {
+        isLoading.value = true;
         try {
             const response = await api.request({
                 url,
