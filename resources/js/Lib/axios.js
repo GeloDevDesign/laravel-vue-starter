@@ -1,5 +1,8 @@
 import axios from "axios";
 import router from "@/router";
+import { useToastAlert } from "../Composables/useToast";
+
+const { toastAlert } = useToastAlert();
 
 const RESPONSE_STATUS = [
     {
@@ -78,21 +81,30 @@ api.interceptors.request.use((request) => {
 });
 
 api.interceptors.response.use(
-    (response) => response,
-    (error) => {
+    function (response) {
+        toastAlert(response.message, "success");
+        return response;
+    },
+    function (error) {
         const status = error.response?.status;
-
+        //  STATUS CODE RESPONSE 200 ABOVE
         const errorFound = RESPONSE_STATUS.find((s) => s.statusCode === status);
         const message = errorFound?.message || "An unknown error occurred.";
 
-        if (status === 401 || status === 502 || status === 503 || status === 504) {
+        if (
+            status === 401 ||
+            status === 500 ||
+            status === 502 ||
+            status === 503 ||
+            status === 504
+        ) {
             localStorage.removeItem("token");
             router.push({
                 name: "error",
                 props: { errorStatus: status, errorMessage: message },
             });
         } else {
-            alert(message);
+            toastAlert(message, "error");
         }
 
         return Promise.reject(error);
