@@ -4,10 +4,10 @@ import { ref, onMounted } from "vue";
 import api from "@/Lib/axios";
 import { useApiRequest } from "@/Composables/useApiRequest";
 
-const { httpRequest, data, error, isLoading } = useApiRequest();
+const { httpRequest, data, error, isLoading,isRequesting } = useApiRequest();
 
 const test = async () => {
-    await httpRequest("GET", "/success");
+    await httpRequest("/success");
     console.log(data.value);
 };
 
@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-if="!isLoading" class="flex w-52 flex-col gap-4">
+    <div v-if="isLoading" class="flex w-52 flex-col gap-4">
         <div class="skeleton h-32 w-full"></div>
         <div class="skeleton h-4 w-28"></div>
         <div class="skeleton h-4 w-full"></div>
@@ -27,6 +27,13 @@ onMounted(() => {
         v-else
         class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
     >
+        <button
+            @click="httpRequest('/success', 'POST')"
+            :disabled="isRequesting"
+            class="btn btn-primary"
+        >
+            Test toast
+        </button>
         <table class="table">
             <!-- head -->
             <thead>

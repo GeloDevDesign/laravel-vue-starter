@@ -98,6 +98,21 @@ Route::get('/success', function (Request $request) {
     ]);
 });
 
+Route::post('/success', function (Request $request) {
+    $dummyAttendance =
+        [
+            'id' => 1,
+            'employee_name' => 'John Doe',
+            'date' => '2024-06-10',
+            'time_in' => '08:00:00',
+            'time_out' => '17:00:00',
+            'status' => 'Present'
+        ];
+
+    return response()->json(['message' => 'POST AXIOS', 'data' => $dummyAttendance], 200);
+});
+
+
 Route::get('/error', function (Request $request) {
     return response()->json(['message' => 'ERROR AXIOS'], 422);
 });

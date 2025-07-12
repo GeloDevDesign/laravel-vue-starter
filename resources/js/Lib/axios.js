@@ -22,7 +22,6 @@ api.interceptors.request.use((request) => {
 
 api.interceptors.response.use(
     function (response) {
-        toastAlert(response.data.message || "Success", "success");
         return response;
     },
     function (error) {
