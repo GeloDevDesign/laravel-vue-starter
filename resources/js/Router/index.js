@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/Pages/Home.vue";
 import Test from "@/Pages/Test.vue";
-import ErrorPage from "../Pages/ErrorPage.vue";
+import ErrorPage from "@/Pages/ErrorPage.vue";
 
 const routes = [
     {
@@ -18,9 +18,10 @@ const routes = [
         meta: { guest: true },
     },
     {
-        path: "/error",
+       path: "/error/:status/:message",
         name: "error",
         component: ErrorPage,
+        props: true,
 
         meta: { guest: true },
     },

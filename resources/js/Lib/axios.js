@@ -81,18 +81,19 @@ api.interceptors.request.use((request) => {
 });
 
 api.interceptors.response.use(
-    function (response) {
-        toastAlert(response.message, "success");
+    async function (response) {
+        toastAlert(response?.data?.message || "Success", "success");
         return response;
     },
-    function (error) {
+    async function (error) {
         const status = error.response?.status;
-        //  STATUS CODE RESPONSE 200 ABOVE
+
         const errorFound = RESPONSE_STATUS.find((s) => s.statusCode === status);
         const message = errorFound?.message || "An unknown error occurred.";
 
         if (
             status === 401 ||
+            status === 405 ||
             status === 500 ||
             status === 502 ||
             status === 503 ||
@@ -101,7 +102,7 @@ api.interceptors.response.use(
             localStorage.removeItem("token");
             router.push({
                 name: "error",
-                props: { errorStatus: status, errorMessage: message },
+                params: { status: status, message: message },
             });
         } else {
             toastAlert(message, "error");
