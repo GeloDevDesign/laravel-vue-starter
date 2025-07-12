@@ -39,7 +39,6 @@ api.interceptors.response.use(
             status === 503 ||
             status === 504
         ) {
-            localStorage.removeItem("token");
             router.push({
                 name: "error",
 
