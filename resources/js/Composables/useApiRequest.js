@@ -1,28 +1,26 @@
-import { reactive } from "vue";
+import { ref } from "vue";
 import api from "@/Lib/axios";
 
 export function useApiRequest() {
-    const apiState = reactive({
-        isLoading: false,
-        data: null,
-        error: null,
-    });
+    const isLoading = ref(false);
+    const data = ref(null);
+    const error = ref(null);
 
-    const httpRequest = async (callback) => {
-        apiState.isLoading = true;
-        apiState.error = null;
-        apiState.data = null;
-
+    const httpRequest = async (method = "GET", url, body = null) => {
         try {
-            const response = await callback;
+            const response = await api.request({
+                url,
+                method,
+                body,
+            });
             console.log(response.data);
-            apiState.data = response.data?.data ?? response.data;
+            data.value = response.data?.data ?? response.data;
         } catch (err) {
-            apiState.error = err;
+            error.value = err;
         } finally {
-            apiState.isLoading = false;
+            isLoading.value = false;
         }
     };
 
-    return { httpRequest, apiState };
+    return { httpRequest, data, error, isLoading };
 }
