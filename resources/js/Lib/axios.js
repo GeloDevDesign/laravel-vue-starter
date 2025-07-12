@@ -85,7 +85,7 @@ api.interceptors.response.use(
         const errorFound = RESPONSE_STATUS.find((s) => s.statusCode === status);
         const message = errorFound?.message || "An unknown error occurred.";
 
-        if (status === 401) {
+        if (status === 401 || status === 502 || status === 503 || status === 504) {
             localStorage.removeItem("token");
             router.push({
                 name: "error",
