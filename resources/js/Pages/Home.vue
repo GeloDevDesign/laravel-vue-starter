@@ -2,16 +2,15 @@
 import { ref, onMounted } from "vue";
 
 import api from "@/Lib/axios";
+import { useApiRequest } from "@/Composables/useApiRequest";
 
-const testAxios = async () => {
-    const response = await api.get("/sucess");
+const { httpRequest, isLoading, data, error } = useApiRequest();
 
-    console.log(response.data);
-   
-};
+await httpRequest("GET", "/sucess");
 
 onMounted(async () => {
-    await testAxios();
+    httpRequest();
+    console.log(data);
 });
 </script>
 

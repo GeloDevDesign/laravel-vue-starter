@@ -18,7 +18,7 @@ const routes = [
         meta: { guest: true },
     },
     {
-       path: "/error/:status/:message",
+        path: "/error/:status/:message",
         name: "error",
         component: ErrorPage,
         props: true,

@@ -13,5 +13,5 @@ Route::get('/success',function(Request $request) {
 });
 
 Route::get('/error',function(Request $request) {
-    return response()->json(['message'=>'ERROR AXIOS'],400);
+    return response()->json(['message'=>'ERROR AXIOS'],422);
 });
