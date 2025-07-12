@@ -8,10 +8,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('/success',function(Request $request) {
-    return response()->json(['message'=>'SUCESS AXIOS'],200);
+Route::get('/success', function (Request $request) {
+    return response()->json(['message' => 'Data loaded sucessfully.'], 200);
 });
 
-Route::get('/error',function(Request $request) {
-    return response()->json(['message'=>'ERROR AXIOS'],422);
+Route::get('/error', function (Request $request) {
+    return response()->json(['message' => 'ERROR AXIOS'], 422);
 });

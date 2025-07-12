@@ -18,8 +18,9 @@ export function useApiRequest() {
                 method,
                 data: body,
             });
-
+            console.log(response.data);
             data.value = response.data?.data ?? response.data;
+         
         } catch (err) {
             error.value = err;
         } finally {

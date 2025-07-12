@@ -6,14 +6,12 @@ import { useApiRequest } from "@/Composables/useApiRequest";
 
 const { httpRequest, isLoading, data, error } = useApiRequest();
 
-await httpRequest("GET", "/sucess");
-
-onMounted(async () => {
-    httpRequest();
-    console.log(data);
+onMounted(() => {
+    httpRequest("GET", "/sucess");
 });
 </script>
 
 <template>
-    <h1>Home</h1>
+    <p v-if="isLoading">loading</p>
+    <h1 v-else>Home</h1>
 </template>
