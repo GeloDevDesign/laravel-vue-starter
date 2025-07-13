@@ -29,11 +29,7 @@ import NavLink from "./NavLink.vue";
                 </template>
             </NavLink>
 
-            <NavLink buttonName="Chart" routeName="home">
-                <template v-slot:icon>
-                    <ChartColumnDecreasing size="20" />
-                </template>
-            </NavLink>
+          
 
             <NavLink buttonName="Chart" routeName="test">
                 <template v-slot:icon>

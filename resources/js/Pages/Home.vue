@@ -43,7 +43,7 @@ onMounted(() => {
                     <option>Athletic</option>
                     <option>Action</option>
                 </select>
-                <button class="btn btn-primary ml-4">
+                <button class="btn btn-primary ml-4 join-item">
                     <Plus /> Add Product
                 </button>
             </div>

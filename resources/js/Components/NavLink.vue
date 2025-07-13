@@ -16,8 +16,7 @@ defineProps({
 <template>
     <RouterLink
         class="btn btn-ghost w-full opacity-75"
-        
-        exactActiveClass="bg-blue-100 font-semibold text-primary opacity-100"
+        exactActiveClass=" font-semibold bg-blue-100 text-primary opacity-100"
         :to="{ name: routeName }"
     >
         <div class="flex justify-start items-center w-full gap-2">
