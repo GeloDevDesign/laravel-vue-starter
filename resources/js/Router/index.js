@@ -9,6 +9,8 @@ const routes = [
         path: "/",
         name: "home",
         component: Home,
+        props: true,
+        props: { pageName: 'Dashboard' },
         meta: { guest: true },
     },
     {
