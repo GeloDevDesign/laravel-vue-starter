@@ -18,9 +18,7 @@ import NavLink from "./NavLink.vue";
                     <a class="text-sm font-bold">LOGO NAME</a>
                 </div>
             </div>
-            <div class="">
-                <button class="btn btn-sm"><Menu size="20" /></button>
-            </div>
+           
         </div>
         <div class="flex flex-col gap-2 px-4">
             <NavLink buttonName="Dashboard" routeName="home">
