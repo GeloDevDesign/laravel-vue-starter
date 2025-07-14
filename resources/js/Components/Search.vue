@@ -1,6 +1,7 @@
 <script setup>
-import {ref,defineModel} from "vue";
-const model = defineModel({ type: [String, Number], required: true });
+import { ref, defineModel } from "vue";
+
+const model = defineModel({ type: [String, Number], required: false });
 </script>
 
 <template>
@@ -21,7 +22,11 @@ const model = defineModel({ type: [String, Number], required: true });
                 <path d="m21 21-4.3-4.3"></path>
             </g>
         </svg>
-        <input v-model="model" type="search" class="grow min-w-52 max-w-80" placeholder="Search" />
-      
+        <input
+            v-model="model"
+            type="search"
+            class="grow min-w-52 max-w-80"
+            placeholder="Search"
+        />
     </label>
 </template>

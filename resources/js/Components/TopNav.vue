@@ -1,25 +1,30 @@
 <script setup>
 import { Menu, ChevronDown, BellRing } from "lucide-vue-next";
+import { useSideNav } from "@/Stores/sideNav";
+const store = useSideNav();
+
+
 </script>
 
 <template>
     <div class="navbar bg-base-100 border-b-2 border-base-300 z-0">
         <div class="flex-1">
-            <div class="">
-                <button class="btn btn-sm mr-2"><Menu size="20" /></button>
+            <div class="ml-2">
+                <button @click="store.toggleSidebar()" class="btn btn-sm mr-2"><Menu size="20" /></button>
                 <button
-                class="btn btn-sm btn-ghost indicator"
-                popovertarget="popover-1"
-                style="anchor-name: --anchor-1"
-            >
-                <BellRing size="20" />
-                <span
-                    class="indicator-item badge rounded-full badge-xs mt-2 badge-accent text-white"
-                    >2</span
+                    
+                    class="btn btn-sm btn-ghost indicator"
+                    popovertarget="popover-1"
+                    style="anchor-name: --anchor-1"
                 >
-            </button>
+                    <BellRing size="20" />
+                    <span
+                        class="indicator-item badge rounded-full badge-xs mt-2 badge-accent text-white"
+                        >2</span
+                    >
+                </button>
             </div>
-            
+
             <ul
                 class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm mt-3"
                 popover

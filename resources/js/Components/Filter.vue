@@ -8,7 +8,7 @@ defineProps({
     },
 });
 
-const model = defineModel({ type: [String, Number], required: true });
+
 </script>
 
 <template>

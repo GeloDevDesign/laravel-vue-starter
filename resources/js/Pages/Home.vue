@@ -6,6 +6,7 @@ import DefaultLayout from "@/Layout/DefaultLayout.vue";
 import PageName from "@/Components/PageName.vue";
 import Filter from "@/Components/Filter.vue";
 import Search from "@/Components/Search.vue";
+
 import {
     Menu,
     House,
