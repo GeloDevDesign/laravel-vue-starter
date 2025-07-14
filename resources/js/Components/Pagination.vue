@@ -16,19 +16,23 @@ const to = computed(() => props.pagination.to || props.pagination.total);
 const total = computed(() => props.pagination.total);
 
 const pages = computed(() => {
-  const range = [];
-  const start = Math.max(1, currentPage.value - 2);
-  const end = Math.min(lastPage.value, currentPage.value + 2);
-
-  for (let i = start; i <= end; i++) {
-    range.push(i);
+  const range = []; 
+  for (let i = 1; i <= lastPage.value; i++) {
+    if (
+      i === 1 ||
+      i === lastPage.value ||
+      (i >= currentPage.value - 1 && i <= currentPage.value + 1)
+    ) {
+      range.push(i);
+    } else if (range[range.length - 1] !== '...') {
+      range.push('...');
+    }
   }
-
   return range;
 });
 
 const changePage = (page) => {
-  if (page >= 1 && page <= lastPage.value && page !== currentPage.value) {
+  if (page !== '...' && page !== currentPage.value && page >= 1 && page <= lastPage.value) {
     emit("page-changed", page);
   }
 };
@@ -68,43 +72,48 @@ const changePage = (page) => {
         </p>
       </div>
       <div>
-        <nav
-          class="inline-flex -space-x-px rounded-md shadow-sm"
-          aria-label="Pagination"
-        >
+        <div class="join">
           <button
-            @click="changePage(1)"
+            @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
-            class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
+            :class="currentPage === 1 ? 'btn-disabled' : 'bg-white'"
+            class="join-item btn btn-square"
           >
-            <span class="sr-only">First</span>
-            &laquo;
+            &#8249;
           </button>
 
-          <template v-for="page in pages" :key="page">
-            <button
-              @click="changePage(page)"
+          <template v-for="(page, index) in pages" :key="index">
+            <input
+              v-if="page !== '...'"
               :class="{
-                'bg-blue-50 border-blue-500 text-blue-600':
-                  currentPage === page,
-                'bg-white border-gray-300 text-gray-500 hover:bg-gray-50':
-                  currentPage !== page,
+                'btn-primary': currentPage === page,
+                'bg-white': currentPage !== page
               }"
-              class="relative inline-flex items-center px-4 py-2 text-sm font-medium border"
+              class="join-item btn btn-square"
+              type="radio"
+              name="pagination"
+              :aria-label="page.toString()"
+              :checked="currentPage === page"
+              @change="changePage(page)"
+            />
+            <button
+              v-else
+              class="join-item btn btn-square btn-disabled"
+              disabled
             >
-              {{ page }}
+              ...
             </button>
           </template>
 
           <button
-            @click="changePage(lastPage)"
+            @click="changePage(currentPage + 1)"
             :disabled="currentPage === lastPage"
-            class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
+            :class="currentPage === lastPage ? 'btn-disabled' : 'bg-white'"
+            class="join-item btn btn-square"
           >
-            <span class="sr-only">Last</span>
-            &raquo;
+            &#8250;
           </button>
-        </nav>
+        </div>
       </div>
     </div>
   </div>
