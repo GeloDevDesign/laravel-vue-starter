@@ -1,12 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-
-import api from "@/Lib/axios";
-import { useApiRequest } from "@/Composables/useApiRequest";
-import DefaultLayout from "../Layout/DefaultLayout.vue";
-import PageName from "@/Components/PageName.vue";
-import Filter from "@/Components/Filter.vue";
-
 import {
     Menu,
     House,
@@ -14,20 +7,29 @@ import {
     SquarePen,
     EllipsisVertical,
 } from "lucide-vue-next";
+import api from "@/Lib/axios";
+import { useApiRequest } from "@/Composables/useApiRequest";
+import DefaultLayout from "../Layout/DefaultLayout.vue";
+import PageName from "@/Components/PageName.vue";
+import Filter from "@/Components/Filter.vue";
 const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
 
-const test = async () => {
-    await httpRequest("/success");
-    console.log(data.value);
-};
+const formData = ref({});
 
-onMounted(() => {
-    test();
+onMounted(async () => {
+    await httpRequest("/success");
 });
+
 </script>
 
 <template>
     <DefaultLayout>
+        <div v-if="isLoading" class="flex w-52 flex-col gap-4">
+            <div class="skeleton h-92 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
         <div class="w-full flex items-center justify-between mt-2 mb-4">
             <PageName
                 :name="pageName"
@@ -57,7 +59,7 @@ onMounted(() => {
             >
                 Test toast
             </button>
-            <table class="table">
+            <table v-if="!isLoading" class="table">
                 <!-- head -->
                 <thead>
                     <tr>

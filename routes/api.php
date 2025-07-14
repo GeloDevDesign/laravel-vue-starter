@@ -102,7 +102,7 @@ Route::post('/success', function (Request $request) {
     $dummyAttendance =
         [
             'id' => 1,
-            'employee_name' => 'John Doe',
+            'employee_name' => 'test 12344123124',
             'date' => '2024-06-10',
             'time_in' => '08:00:00',
             'time_out' => '17:00:00',

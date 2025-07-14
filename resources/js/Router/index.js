@@ -11,16 +11,17 @@ const routes = [
         name: "home",
         component: Home,
         props: true,
-        props: { pageName: 'Dashboard' },
+        props: { pageName: "Dashboard" },
         meta: { guest: true },
     },
     {
         path: "/test",
         name: "test",
         component: Test,
+        props: { pageName: "Testpage" },
         meta: { guest: true },
     },
-     {
+    {
         path: "/login",
         name: "login",
         component: LoginPage,

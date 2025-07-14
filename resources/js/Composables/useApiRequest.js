@@ -21,9 +21,10 @@ export function useApiRequest() {
      */
     const httpRequest = async (url, method = "GET", body = null) => {
         if (method === "GET") isLoading.value = true;
-        isRequesting.value = true;
+       
 
         try {
+             isRequesting.value = true;
             const response = await api.request({ url, method, data: body });
 
             if (method === "GET") {
