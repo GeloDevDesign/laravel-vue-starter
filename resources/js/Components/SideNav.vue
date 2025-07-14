@@ -10,7 +10,7 @@ const { isOpen } = storeToRefs(useSideNav());
 <template>
     <div
         class="bg-base-100 h-full bottom-0 flex flex-col  gap-2 border-r-2 border-base-300 transition-all duration-300"
-        :class="isOpen ? 'w-64' : 'w-22 items-center'"
+        :class="isOpen ? 'w-64' : 'w-18 items-center'"
     >
         <div class="p-4 justify-between flex items-center mb-4">
             <div class="flex items-center justify-center gap-2">

@@ -12,7 +12,7 @@ const { isOpen } = storeToRefs(useSideNav());
     <!--Top Navigation -->
     <header
         class="fixed top-0 right-0 z-50 transition-all duration-300"
-        :class="isOpen ? 'left-64' : 'left-22'"
+        :class="isOpen ? 'left-64' : 'left-18'"
     >
         <TopNav />
     </header>
@@ -23,8 +23,8 @@ const { isOpen } = storeToRefs(useSideNav());
         :class="[
             isOpen
                 ? 'w-64 translate-x-0'
-                : 'w-22 translate-x-0 md:translate-x-0',
-            'md:translate-x-0', // Always show on md+ screens
+                : 'w-18 translate-x-0 md:translate-x-0',
+            'md:translate-x-0',
         ]"
     >
         <SideNav />
@@ -40,7 +40,7 @@ const { isOpen } = storeToRefs(useSideNav());
     <!-- Main Content Area -->
     <main
         class="p-4 bg-base-200 mt-16 min-h-screen transition-all duration-300"
-        :class="isOpen ? 'ml-64' : 'ml-22'"
+        :class="isOpen ? 'ml-64' : 'ml-18'"
     >
         <section class="">
             <slot></slot>
