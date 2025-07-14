@@ -2,8 +2,15 @@
 import { ref, onMounted } from "vue";
 import api from "@/Lib/axios";
 import { useApiRequest } from "@/Composables/useApiRequest";
-import DefaultLayout from "../Layout/DefaultLayout.vue";
-import { Menu, House, Plus, SquarePen,EllipsisVertical } from "lucide-vue-next";
+import DefaultLayout from "@/Layout/DefaultLayout.vue";
+import PageName from "@/Components/PageName.vue";
+import {
+    Menu,
+    House,
+    Plus,
+    SquarePen,
+    EllipsisVertical,
+} from "lucide-vue-next";
 const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
 
 defineProps({
@@ -24,12 +31,11 @@ onMounted(() => {
 <template>
     <DefaultLayout>
         <div class="w-full flex items-center justify-between mt-2 mb-4">
-            <div class="w-1/2">
-                <a class="text-2xl font-bold opacity-80">{{ pageName }}</a>
-                <p class="text-xs opacity-70">
-                    This is your dashboard analytics
-                </p>
-            </div>
+            <PageName
+                :name="pageName"
+                description="his is your dashboard analytics"
+            />
+
             <div class="join">
                 <div class="w-full">
                     <input
@@ -60,20 +66,17 @@ onMounted(() => {
                         <th>Job</th>
                         <th>Date</th>
                         <th>Status</th>
-                         <th>Status</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
-                   
-
-                     <tr>
+                    <tr>
                         <th>1</th>
                         <td>Cy Ganderton</td>
                         <td>Quality Control Specialist</td>
                         <td>Blue</td>
-                         <td>Blue</td>
+                        <td>Blue</td>
                         <td>
                             <div
                                 class="badge badge-soft font-semibold badge-primary"
@@ -83,8 +86,12 @@ onMounted(() => {
                         </td>
                         <td>
                             <div class="dropdown dropdown-center">
-                                <div tabindex="0" role="button" class="btn btn-sm m-1">
-                                    <EllipsisVertical size="18" /> 
+                                <div
+                                    tabindex="0"
+                                    role="button"
+                                    class="btn btn-sm m-1"
+                                >
+                                    <EllipsisVertical size="18" />
                                 </div>
                                 <ul
                                     tabindex="0"
