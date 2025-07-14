@@ -14,7 +14,7 @@ import { Menu, ChevronDown, BellRing } from "lucide-vue-next";
             >
                 <BellRing size="20" />
                 <span
-                    class="indicator-item badge rounded-full badge-xs mt-2 bg-base-content text-white"
+                    class="indicator-item badge rounded-full badge-xs mt-2 badge-accent text-white"
                     >2</span
                 >
             </button>

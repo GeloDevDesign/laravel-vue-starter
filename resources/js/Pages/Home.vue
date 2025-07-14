@@ -4,6 +4,8 @@ import api from "@/Lib/axios";
 import { useApiRequest } from "@/Composables/useApiRequest";
 import DefaultLayout from "@/Layout/DefaultLayout.vue";
 import PageName from "@/Components/PageName.vue";
+import Filter from "@/Components/Filter.vue";
+import Search from "@/Components/Search.vue";
 import {
     Menu,
     House,
@@ -20,7 +22,6 @@ defineProps({
 });
 const test = async () => {
     await httpRequest("/success");
-    console.log(data.value);
 };
 
 onMounted(() => {
@@ -37,18 +38,10 @@ onMounted(() => {
             />
 
             <div class="join">
-                <div class="w-full">
-                    <input
-                        class="input join-item min-w-52 w-80"
-                        placeholder="Search"
-                    />
-                </div>
-                <select class="select join-item min-w-24 max-w-32">
-                    <option disabled selected>Filter</option>
-                    <option>Sci-fi</option>
-                    <option>Athletic</option>
-                    <option>Action</option>
-                </select>
+                <Search />
+
+                <Filter :filterItems="['Sci-fi', 'Athletic', 'Action']" />
+
                 <button class="btn btn-primary ml-4 join-item">
                     <Plus /> Add Product
                 </button>
