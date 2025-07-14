@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/Pages/Home.vue";
 import Test from "@/Pages/Test.vue";
 import ErrorPage from "@/Pages/ErrorPage.vue";
+import LoginPage from "@/Pages/LoginPage.vue";
 
 const routes = [
     {
@@ -17,6 +18,12 @@ const routes = [
         path: "/test",
         name: "test",
         component: Test,
+        meta: { guest: true },
+    },
+     {
+        path: "/login",
+        name: "login",
+        component: LoginPage,
         meta: { guest: true },
     },
     {

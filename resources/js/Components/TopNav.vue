@@ -1,18 +1,18 @@
 <script setup>
 import { Menu, ChevronDown, BellRing } from "lucide-vue-next";
+import { RouterLink } from "vue-router";
 import { useSideNav } from "@/Stores/sideNav";
 const store = useSideNav();
-
-
 </script>
 
 <template>
     <div class="navbar bg-base-100 border-b-2 border-base-300 z-0">
         <div class="flex-1">
             <div class="ml-2">
-                <button @click="store.toggleSidebar()" class="btn btn-sm mr-2"><Menu size="20" /></button>
+                <button @click="store.toggleSidebar()" class="btn btn-sm mr-2">
+                    <Menu size="20" />
+                </button>
                 <button
-                    
                     class="btn btn-sm btn-ghost indicator"
                     popovertarget="popover-1"
                     style="anchor-name: --anchor-1"
@@ -26,13 +26,13 @@ const store = useSideNav();
             </div>
 
             <ul
-                class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm mt-3"
+                class="dropdown menu-sm menu w-52 rounded-box bg-base-100 shadow-sm mt-3"
                 popover
                 id="popover-1"
                 style="position-anchor: --anchor-1"
             >
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
+                <li class=""><a>Item 1</a></li>
+                <li class=""><a>Item 1</a></li>
             </ul>
         </div>
         <div class="flex-none">
@@ -59,7 +59,9 @@ const store = useSideNav();
                         </a>
                     </li>
                     <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+                    <RouterLink :to="{ name: 'login' }">
+                        <li><a>Logout</a></li>
+                    </RouterLink>
                 </ul>
             </div>
         </div>
