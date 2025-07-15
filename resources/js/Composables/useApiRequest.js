@@ -4,35 +4,27 @@ import { useToastAlert } from "@/Composables/useToast";
 
 const { toastAlert } = useToastAlert();
 
-/**
- * Handles API requests with loading and error states
- */
 export function useApiRequest() {
-    const isLoading = ref(false);       // For GET requests
-    const isRequesting = ref(false);    // For all requests
-    const data = ref([]);               // Response data
-    const error = ref(null);            // Error response
+    const isLoading = ref(false);
+    const isRequesting = ref(false);
+    const data = ref([]);
+    const error = ref(null);
 
-    /**
-     * Sends an API request
-     * @param {string} url - API endpoint
-     * @param {string} method - HTTP method
-     * @param {object|null} body - Request payload
-     */
     const httpRequest = async (url, method = "GET", body = null) => {
         if (method === "GET") isLoading.value = true;
-       
 
         try {
-             isRequesting.value = true;
+            isRequesting.value = true;
             const response = await api.request({ url, method, data: body });
 
             if (method === "GET") {
                 data.value = response.data?.data ?? response.data;
             } else {
-                // Prepend new data for non-GET requests
                 if (response.data?.data) data.value.unshift(response.data.data);
-                toastAlert(response.data.message || "Action successful", "success");
+                toastAlert(
+                    response.data.message || "Action successful",
+                    "success"
+                );
             }
         } catch (err) {
             error.value = err;
@@ -42,5 +34,80 @@ export function useApiRequest() {
         }
     };
 
-    return { httpRequest, data, error, isLoading, isRequesting };
+    const httpGetRequest = async (url) => {
+        isLoading.value = true;
+        try {
+            const response = await api.get(url);
+            data.value = response.data.data || [];
+        } catch (err) {
+            error.value = err;
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    const httpPostRequest = async (url, payload) => {
+        isLoading.value = true;
+        try {
+            const response = await api.post(url, payload);
+            data.value.unshift(response.data.data);
+            toastAlert("Created successfully", "success");
+        } catch (err) {
+            error.value = err;
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    const httpPutRequest = async (url, id, payload) => {
+        isLoading.value = true;
+        try {
+            const response = await api.put(url, payload);
+            // Update the specific item in the array
+            const index = data.value.findIndex((item) => item.id === id);
+            if (index !== -1) {
+                data.value[index] = response.data.data;
+            }
+            toastAlert(
+                response.data.message || "Updated successfully",
+                "success"
+            );
+        } catch (err) {
+            error.value = err;
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    const httpDeleteRequest = async (url, id) => {
+        isLoading.value = true;
+        try {
+            await api.delete(url);
+            // const index = data.value.findIndex((item) => item.id === id);
+            // if (index !== -1) {
+            //     data.value.splice(index, 1); // Remove the item at the found index
+            // }
+            data.value = data.value.filter((item) => item.id !== id);
+            toastAlert(
+                response.data.message || "Deleted successfully",
+                "success"
+            );
+        } catch (err) {
+            error.value = err;
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    return {
+        httpRequest,
+        httpGetRequest,
+        httpPostRequest,
+        httpPutRequest,
+        httpDeleteRequest,
+        data,
+        error,
+        isLoading,
+        isRequesting,
+    };
 }
