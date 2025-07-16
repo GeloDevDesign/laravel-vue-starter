@@ -61,7 +61,7 @@ const loginFormData = reactive({
 
             <PrimaryButton buttonName="Register" class="mt-2" />
         </div>
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1 text-sm">
             <p class="opacity-75">Already have account yet?</p>
             <RouterLink :to="{ name: 'login' }">
                 <span class="link link-primary opacity-100">Login</span>

@@ -38,7 +38,7 @@ const loginFormData = reactive({
             <PrimaryButton buttonName="Send Reset Link" />
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 text-sm">
             <span class="opacity-70">Didn't get the email?</span>
             <span class="link link-primary">Resend</span>
         </div>

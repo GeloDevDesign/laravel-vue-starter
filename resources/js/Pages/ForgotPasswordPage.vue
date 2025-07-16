@@ -31,7 +31,7 @@ const loginFormData = reactive({
                    Reset Password
                 </h1>
                 <p class="opacity-70 text-sm mt-1">
-                    Enter your email to get a reset link.
+                    Enter your registered email to get a reset link.
                 </p>
             </div>
             <InputField
@@ -41,6 +41,12 @@ const loginFormData = reactive({
                 inputLabel="Email"
             />
             <PrimaryButton buttonName="Send Reset Link" />
+        </div>
+         <div class="flex items-center gap-1 text-sm">
+            <p class="opacity-75">Back to</p>
+            <RouterLink :to="{ name: 'login' }">
+                <span class="link link-primary opacity-100">Login</span>
+            </RouterLink>
         </div>
     </section>
 </template>
