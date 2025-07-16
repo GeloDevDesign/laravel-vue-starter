@@ -3,6 +3,12 @@ import { Menu, ChevronDown, BellRing } from "lucide-vue-next";
 import { RouterLink } from "vue-router";
 import { useSideNav } from "@/Stores/sideNav";
 const store = useSideNav();
+
+import { useAuthStore } from "@/Stores/auth";
+import { storeToRefs } from "pinia";
+
+const { errors,user } = storeToRefs(useAuthStore());
+const { logout } = useAuthStore();
 </script>
 
 <template>
@@ -46,7 +52,7 @@ const store = useSideNav();
             </div>
             <div class="dropdown dropdown-end">
                 <div tabindex="0" class="min-w-20 btn btn-ghost btn-sm avatar">
-                    Dr. Angelo <ChevronDown size="14" />
+                    {{ user.name }} <ChevronDown size="14" />
                 </div>
                 <ul
                     tabindex="0"
@@ -59,9 +65,8 @@ const store = useSideNav();
                         </a>
                     </li>
                     <li><a>Settings</a></li>
-                    <RouterLink :to="{ name: 'login' }">
-                        <li><a>Logout</a></li>
-                    </RouterLink>
+
+                    <li @click="logout('/logout')"><a>Logout</a></li>
                 </ul>
             </div>
         </div>

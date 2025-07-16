@@ -5,9 +5,13 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputField from "@/Components/InputField.vue";
 
 import { useApiRequest } from "@/Composables/useApiRequest";
-const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
+import { useAuthStore } from "@/Stores/auth";
+import { storeToRefs } from "pinia";
 
-const loginFormData = reactive({
+const { errors } = storeToRefs(useAuthStore());
+const authStore = useAuthStore();
+
+const registerFormData = reactive({
     name: "",
     email: "",
     password: "",
@@ -25,46 +29,55 @@ const loginFormData = reactive({
             src="https://img.freepik.com/free-vector/gradient-triangle-molecule-logo-technology-design_53876-116026.jpg?semt=ais_hybrid&w=740"
         />
 
-        <div class="w-1/4 flex flex-col gap-4 bg-base-100 p-4">
+        <form
+            @submit.prevent="
+                () => {
+                    authStore.authenticate('register', registerFormData);
+                }
+            "
+            class="w-1/4 flex flex-col gap-4 bg-base-100 p-4"
+        >
             <div
                 class="text-center flex flex-col items-center justify-center pb-4"
             >
-                <h1 class="font-semibold text-xl opacity-80">Welcome Back</h1>
-                <p class="opacity-70 text-sm mt-1">
-                    To access the system please login.
-                </p>
+                <h1 class="font-semibold text-xl opacity-80">
+                    Create Your Account
+                </h1>
+                <p class="opacity-70 text-sm mt-1">Sign up to get started.</p>
             </div>
+
             <InputField
-                v-model="loginFormData.name"
+                v-model="registerFormData.name"
                 inputType="text"
                 placeholder="Your name"
                 inputLabel="Name"
             />
             <InputField
-                v-model="loginFormData.email"
+                v-model="registerFormData.email"
                 inputType="text"
                 placeholder="Your email"
                 inputLabel="Email"
             />
             <InputField
-                v-model="loginFormData.password"
+                v-model="registerFormData.password"
                 inputType="password"
                 placeholder="Your password"
                 inputLabel="Password"
             />
             <InputField
-                v-model="loginFormData.password_confirmation"
+                v-model="registerFormData.password_confirmation"
                 inputType="password"
-                placeholder="Your password confirmation"
-                inputLabel="Password Confirmation"
+                placeholder="Confirm your password"
+                inputLabel="Confirm Password"
             />
 
             <PrimaryButton buttonName="Register" class="mt-2" />
-        </div>
+        </form>
+
         <div class="flex items-center gap-1 text-sm">
-            <p class="opacity-75">Already have account yet?</p>
+            <p class="opacity-75">Already have an account?</p>
             <RouterLink :to="{ name: 'login' }">
-                <span class="link link-primary opacity-100">Login</span>
+                <span class="link link-primary opacity-100">Log in</span>
             </RouterLink>
         </div>
     </section>

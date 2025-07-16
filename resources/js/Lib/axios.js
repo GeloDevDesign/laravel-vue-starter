@@ -6,6 +6,7 @@ const { toastAlert } = useToastAlert();
 
 const api = axios.create({
     baseURL: "/api",
+    withCredentials: true,
     headers: {
         Accept: "application/json",
     },
@@ -45,11 +46,6 @@ api.interceptors.response.use(
                     message: message || "Page not found.",
                 },
             });
-        } else if (status === 401) {
-            localStorage.removeItem("token");
-            router.push({ name: "login" });
-        } else {
-            toastAlert(message, "error");
         }
 
         return Promise.reject(error);

@@ -4,8 +4,12 @@ import { RouterLink } from "vue-router";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputField from "@/Components/InputField.vue";
 
-import { useApiRequest } from "@/Composables/useApiRequest";
-const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
+
+import { useAuthStore } from "@/Stores/auth";
+import { storeToRefs } from "pinia";
+
+const { errors } = storeToRefs(useAuthStore());
+const authStore = useAuthStore();
 
 const loginFormData = reactive({
     email: "",
@@ -23,7 +27,14 @@ const loginFormData = reactive({
             src="https://img.freepik.com/free-vector/gradient-triangle-molecule-logo-technology-design_53876-116026.jpg?semt=ais_hybrid&w=740"
         />
 
-        <div class="w-1/4 flex flex-col gap-4 bg-base-100 p-4">
+        <form
+            @submit.prevent="
+                () => {
+                    authStore.authenticate('login', loginFormData);
+                }
+            "
+            class="w-1/4 flex flex-col gap-4 bg-base-100 p-4"
+        >
             <div
                 class="text-center flex flex-col items-center justify-center pb-4"
             >
@@ -36,12 +47,14 @@ const loginFormData = reactive({
                 inputType="text"
                 placeholder="Your email"
                 inputLabel="Email"
+                :error="errors.email?.[0]"
             />
             <InputField
                 v-model="loginFormData.password"
                 inputType="password"
                 placeholder="Your Password"
                 inputLabel="Password"
+                :error="errors.password?.[0]"
             />
 
             <RouterLink
@@ -52,7 +65,7 @@ const loginFormData = reactive({
             </RouterLink>
 
             <PrimaryButton buttonName="Login" />
-        </div>
+        </form>
 
         <div class="flex items-center gap-1 text-sm">
             <p class="opacity-75">Don't have an account yet?</p>

@@ -31,7 +31,7 @@ const model = defineModel({
             class="input w-full"
             :placeholder="props.placeholder"
         />
-        <p v-if="props.error" class="text-red-600 opacity-70">
+        <p v-if="props.error" class="text-red-600 text-sm opacity-70">
             {{ props.error }}
         </p>
     </div>

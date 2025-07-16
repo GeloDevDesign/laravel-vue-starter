@@ -7,6 +7,7 @@ import LoginPage from "@/Pages/LoginPage.vue";
 import RegisterPage from "@/Pages/RegisterPage.vue";
 import ForgotPasswordPage from "@/Pages/ForgotPasswordPage.vue";
 import EmailVerificationPage from "@/Pages/EmailVerificationPage.vue";
+import { useAuthStore } from "@/Stores/auth";
 
 const routes = [
     {
@@ -15,14 +16,14 @@ const routes = [
         component: Home,
         props: true,
         props: { pageName: "Dashboard" },
-        meta: { guest: true },
+        meta: { auth: true },
     },
     {
         path: "/test",
         name: "test",
         component: Test,
         props: { pageName: "Testpage" },
-        meta: { guest: true },
+        meta: { auth: true },
     },
     {
         path: "/login",
@@ -40,7 +41,7 @@ const routes = [
         path: "/email-verification",
         name: "email-verification",
         component: EmailVerificationPage,
-        meta: { guest: true },
+        meta: { auth: true },
     },
     {
         path: "/reset-password",
@@ -60,7 +61,6 @@ const routes = [
         name: "not-found",
         component: ErrorPage,
         props: { status: 404, message: "Page not found." },
-        meta: { guest: true },
     },
 ];
 
@@ -70,14 +70,20 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-    // const authStore = useAuthStore();
-    // await authStore.getUser();
-    // if (authStore.user && to.meta.guest) {
-    //     return { name: "home" };
-    // }
-    // if (!authStore.user && to.meta.auth) {
-    //     return { name: "login" };
-    // }
+    const authStore = useAuthStore();
+    await authStore.getUser();
+    
+    if (!authStore.user && to.meta.auth) {
+        await authStore.getUser();
+    }
+
+    if (authStore.user && to.meta.guest) {
+        return { name: "home" };
+    }
+
+    if (!authStore.user && to.meta.auth) {
+        return { name: "login" };
+    }
 });
 
 export default router;

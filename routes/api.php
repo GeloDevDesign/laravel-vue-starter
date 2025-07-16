@@ -2,121 +2,28 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NoteController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Public routes
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/reset-password', [AuthController::class, 'reset_password']);
+Route::get('/verify-email/{user}', [AuthController::class, 'verify_email']);
 
-Route::get('/success', function (Request $request) {
-    $dummyAttendance = [
-        [
-            'id' => 1,
-            'employee_name' => 'John Doe',
-            'date' => '2024-06-10',
-            'time_in' => '08:00:00',
-            'time_out' => '17:00:00',
-            'status' => 'Present'
-        ],
-        [
-            'id' => 2,
-            'employee_name' => 'Jane Smith',
-            'date' => '2024-06-10',
-            'time_in' => '08:05:00',
-            'time_out' => '16:55:00',
-            'status' => 'Present'
-        ],
-        [
-            'id' => 3,
-            'employee_name' => 'Mike Johnson',
-            'date' => '2024-06-10',
-            'time_in' => '08:15:00',
-            'time_out' => '17:10:00',
-            'status' => 'Late'
-        ],
-        [
-            'id' => 4,
-            'employee_name' => 'Sarah Williams',
-            'date' => '2024-06-10',
-            'time_in' => null,
-            'time_out' => null,
-            'status' => 'Absent'
-        ],
-        [
-            'id' => 5,
-            'employee_name' => 'David Brown',
-            'date' => '2024-06-10',
-            'time_in' => '08:00:00',
-            'time_out' => '12:00:00',
-            'status' => 'Half Day'
-        ],
-        [
-            'id' => 6,
-            'employee_name' => 'Emily Davis',
-            'date' => '2024-06-11',
-            'time_in' => '08:02:00',
-            'time_out' => '17:01:00',
-            'status' => 'Present'
-        ],
-        [
-            'id' => 7,
-            'employee_name' => 'Robert Wilson',
-            'date' => '2024-06-11',
-            'time_in' => '08:10:00',
-            'time_out' => '17:05:00',
-            'status' => 'Present'
-        ],
-        [
-            'id' => 8,
-            'employee_name' => 'Lisa Taylor',
-            'date' => '2024-06-11',
-            'time_in' => '09:00:00',
-            'time_out' => '17:30:00',
-            'status' => 'Late'
-        ],
-        [
-            'id' => 9,
-            'employee_name' => 'James Anderson',
-            'date' => '2024-06-11',
-            'time_in' => '08:00:00',
-            'time_out' => '17:00:00',
-            'status' => 'Present'
-        ],
-        [
-            'id' => 10,
-            'employee_name' => 'Emma Martinez',
-            'date' => '2024-06-11',
-            'time_in' => '08:00:00',
-            'time_out' => null,
-            'status' => 'Left Early'
-        ]
-    ];
+// Protected routes (token-based authentication via Sanctum)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-    return response()->json([
-        'message' => 'Data loaded successfully.',
-        'data' => $dummyAttendance,
-        'status' => 200
-    ]);
-});
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::post('/success', function (Request $request) {
-    $dummyAttendance =
-        [
-            'id' => 1,
-            'employee_name' => 'test 12344123124',
-            'date' => '2024-06-10',
-            'time_in' => '08:00:00',
-            'time_out' => '17:00:00',
-            'status' => 'Present'
-        ];
+    // NoteController CRUD with policy enforcement
+    Route::apiResource('notes', NoteController::class);
 
-    return response()->json(['message' => 'POST AXIOS', 'data' => $dummyAttendance], 200);
-});
-
-Route::delete('/success', function (Request $request) {
-    return response()->json(['message' => 'Data deleted successfully.'], 201);
-});
-
-
-Route::get('/error', function (Request $request) {
-    return response()->json(['message' => 'ERROR AXIOS'], 422);
+    // OR if you want to use specific policy middleware
+    // Route::get('/notes/{note}', [NoteController::class, 'show'])->middleware('can:view,note');
+    // Route::put('/notes/{note}', [NoteController::class, 'update'])->middleware('can:modify,note');
+    // Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->middleware('can:modify,note');
 });
