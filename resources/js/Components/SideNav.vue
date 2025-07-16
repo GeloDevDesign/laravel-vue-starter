@@ -44,7 +44,7 @@ const { isOpen } = storeToRefs(useSideNav());
 
             <NavLink
                 :buttonName="isOpen ? 'Chart' : ''"
-                routeName="test"
+                routeName="notes"
                 tooltipText="Chart"
             >
                 <template v-slot:icon>

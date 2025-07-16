@@ -29,6 +29,9 @@ defineProps({
     pageName: {
         default: "No Page name",
     },
+    description: {
+        default: "No description for this page",
+    },
 });
 
 onMounted(async () => {

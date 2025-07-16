@@ -14,11 +14,15 @@ import {
     SquarePen,
     EllipsisVertical,
 } from "lucide-vue-next";
-const { httpRequest, data, error, isLoading, isMakingRequest } = useApiRequest();
+const { httpRequest, data, error, isLoading, isMakingRequest } =
+    useApiRequest();
 
 defineProps({
     pageName: {
-        default: "Home",
+        default: "No page name.",
+    },
+    description: {
+        default: "No description for this page",
     },
 });
 const test = async () => {

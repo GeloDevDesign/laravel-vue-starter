@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/Pages/Home.vue";
-import Test from "@/Pages/Test.vue";
+import NotePage from "@/Pages/NotePage.vue";
 import ErrorPage from "@/Pages/ErrorPage.vue";
 import LoginPage from "@/Pages/LoginPage.vue";
 import RegisterPage from "@/Pages/RegisterPage.vue";
@@ -15,14 +15,20 @@ const routes = [
         name: "home",
         component: Home,
         props: true,
-        props: { pageName: "Dashboard" },
+        props: {
+            pageName: "Dashboard",
+            description: "Your system analytics here",
+        },
         meta: { auth: true },
     },
     {
-        path: "/test",
-        name: "test",
-        component: Test,
-        props: { pageName: "Testpage" },
+        path: "/notes",
+        name: "notes",
+        component: NotePage,
+        props: {
+            pageName: "Notes",
+            description: "Your recent notes will show here",
+        },
         meta: { auth: true },
     },
     {
@@ -72,7 +78,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     const authStore = useAuthStore();
     await authStore.getUser();
-    
+
     if (!authStore.user && to.meta.auth) {
         await authStore.getUser();
     }
