@@ -11,6 +11,7 @@ export function useApiRequest() {
     const error = ref(null);
     const isMakingRequest = ref(false);
     const selectedItem = ref(null);
+    const pagination = null;
 
     const httpRequest = async (url, method = "GET", body = null) => {
         if (method === "GET") isLoading.value = true;
@@ -40,7 +41,9 @@ export function useApiRequest() {
         isLoading.value = true;
         try {
             const response = await api.get(url);
+
             data.value = response.data.data || [];
+            pagination.value = response.data.data;
         } catch (err) {
             error.value = err;
         } finally {

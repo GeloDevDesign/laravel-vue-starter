@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api from "@/Lib/axios"; 
+import api from "@/Lib/axios";
 import { useModalAlert } from "@/Composables/useModal";
 import router from "@/router/index.js";
 
@@ -12,7 +12,6 @@ export const useAuthStore = defineStore("authStore", {
     }),
 
     actions: {
-       
         async authenticate(apiRoute, formData) {
             this.errors = {};
 
@@ -21,7 +20,6 @@ export const useAuthStore = defineStore("authStore", {
 
                 const { user, token } = response.data;
 
-                
                 localStorage.setItem("token", token);
 
                 this.user = user;
@@ -43,15 +41,13 @@ export const useAuthStore = defineStore("authStore", {
             }
         },
 
-      
         async logout() {
             try {
+                this.user = null;
                 await api.post("/logout");
 
-              
                 localStorage.removeItem("token");
 
-                this.user = null;
                 this.errors = {};
 
                 modalAlert("Success", "Logged out successfully.", "success");
@@ -61,7 +57,6 @@ export const useAuthStore = defineStore("authStore", {
             }
         },
 
-       
         async getUser() {
             try {
                 const response = await api.get("/user");

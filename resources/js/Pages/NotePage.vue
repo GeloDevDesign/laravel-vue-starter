@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import {
     Menu,
     House,
@@ -7,23 +7,28 @@ import {
     SquarePen,
     EllipsisVertical,
 } from "lucide-vue-next";
-import api from "@/Lib/axios";
-import { useApiRequest } from "@/Composables/useApiRequest";
-import DefaultLayout from "../Layout/DefaultLayout.vue";
+
+import DefaultLayout from "@/Layout/DefaultLayout.vue";
+import Pagination from "@/Components/Pagination.vue";
 import PageName from "@/Components/PageName.vue";
 import Filter from "@/Components/Filter.vue";
-const {
-    httpRequest,
-    httpPostRequest,
-    httpDeleteRequest,
-    data,
-    error,
-    isLoading,
-    isMakingRequest,
-    selectedItem,
-} = useApiRequest();
+import { storeToRefs } from "pinia";
+import { useNoteStore } from "@/Stores/note";
+
+const noteStore = useNoteStore();
+const { getNotes, deleteNote } = noteStore;
+const { data, pagination, loading } = storeToRefs(noteStore);
 
 const formData = ref({});
+
+const handlePageChange = (page) => {
+    getNotes("notes", page, 10);
+};
+
+const numberOffset = computed(() => {
+    if (!pagination.value) return 0;
+    return (pagination.value.current_page - 1) * pagination.value.per_page;
+});
 
 defineProps({
     pageName: {
@@ -35,23 +40,14 @@ defineProps({
 });
 
 onMounted(async () => {
-    await httpRequest("/success");
+    await getNotes("notes", 1, 10);
 });
 </script>
 
 <template>
     <DefaultLayout>
-        <div v-if="isLoading" class="flex w-52 flex-col gap-4">
-            <div class="skeleton h-92 w-full"></div>
-            <div class="skeleton h-4 w-28"></div>
-            <div class="skeleton h-4 w-full"></div>
-            <div class="skeleton h-4 w-full"></div>
-        </div>
         <div class="w-full flex items-center justify-between mt-2 mb-4">
-            <PageName
-                :name="pageName"
-                description="his is your dashboard analytics"
-            />
+            <PageName :name="pageName" :description="description" />
 
             <div class="join">
                 <div class="w-full">
@@ -67,54 +63,65 @@ onMounted(async () => {
             </div>
         </div>
         <div
-            class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
+            class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 h-[71vh] min-h-[71vh]"
         >
-            <button
-                @click="httpPostRequest('/success')"
-                :disabled="isMakingRequest"
-                class="btn btn-primary"
-            >
-                Test toast
-            </button>
-            <table v-if="!isLoading" class="table">
+            <table class="table">
                 <!-- head -->
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Time in</th>
-                        <th>Time out</th>
+                        <th>No.</th>
+                        <th>Title</th>
+                        <th>Body</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- row 1 -->
-                    <tr v-for="item in data" :key="item.id">
-                        <th>{{ item.id }}</th>
-                        <td>{{ item.employee_name }}</td>
-                        <td>{{ item.date }}</td>
-                        <td>{{ item.time_in }}</td>
-                        <td>{{ item.time_out }}</td>
+                    <tr v-if="loading">
+                        <td>
+                            <div class="skeleton h-4 w-1/2"></div>
+                        </td>
+                        <td>
+                            <div class="skeleton h-4 w-3/4"></div>
+                        </td>
+                        <td>
+                            <div class="skeleton h-4 w-4/4"></div>
+                        </td>
+                        <td>
+                            <div class="skeleton h-4 w-2/3"></div>
+                        </td>
+                    </tr>
+
+                    <tr v-else v-for="(item, index) in data" :key="item.id">
+                        <th>
+                            {{ numberOffset + index + 1 }}
+                        </th>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.body }}</td>
+
                         <td>
                             <button
-                                :disabled="selectedItem === item.id"
+                                @click="
+                                    deleteNote(
+                                        `notes/${item.id}`,
+                                        item,
+                                        pagination?.current_page || 1,
+                                        pagination?.per_page || 10
+                                    )
+                                "
                                 class="btn btn-warning btn-sm"
-                                @click="httpDeleteRequest('/success', item.id)"
                             >
-                                {{
-                                    selectedItem === item.id
-                                        ? "Deleting.."
-                                        : "Delete"
-                                }}<span
-                                    v-if="selectedItem === item.id"
-                                    class="loading loading-spinner loading-xs"
-                                ></span>
+                                Delete
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <Pagination
+            v-if="pagination && pagination.total > 0"
+            :pagination="pagination"
+            @page-changed="handlePageChange"
+            class="mt-4"
+        />
     </DefaultLayout>
 </template>
