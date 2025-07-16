@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'errors' => [
                     'email' => ['The provided credentials are incorrect.']
                 ]
-            ], 403);
+            ], 401);
         }
 
         $token = $user->createToken('token')->plainTextToken;

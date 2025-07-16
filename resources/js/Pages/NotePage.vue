@@ -77,27 +77,33 @@ onMounted(async () => {
                 </thead>
                 <tbody>
                     <tr v-if="loading">
-                        <td>
-                            <div class="skeleton h-4 w-1/2"></div>
+                        <td colspan="4" class="text-center py-12">
+                            <div
+                                class="flex justify-center items-center space-x-2 text-base-content/60"
+                            >
+                                <span
+                                    class="loading loading-spinner loading-sm"
+                                ></span>
+                                <span>Loading notes...</span>
+                            </div>
                         </td>
-                        <td>
-                            <div class="skeleton h-4 w-3/4"></div>
-                        </td>
-                        <td>
-                            <div class="skeleton h-4 w-4/4"></div>
-                        </td>
-                        <td>
-                            <div class="skeleton h-4 w-2/3"></div>
+                    </tr>
+
+                    <tr v-else-if="!loading && (!data || data.length === 0)">
+                        <td colspan="4" class="text-center py-12">
+                            <div class="text-base-content/60">
+                                <p class="text-lg mb-2">No notes found</p>
+                                <p class="text-sm">
+                                    Try to refresh or start by adding your first note
+                                </p>
+                            </div>
                         </td>
                     </tr>
 
                     <tr v-else v-for="(item, index) in data" :key="item.id">
-                        <th>
-                            {{ numberOffset + index + 1 }}
-                        </th>
+                        <th>{{ numberOffset + index + 1 }}</th>
                         <td>{{ item.title }}</td>
                         <td>{{ item.body }}</td>
-
                         <td>
                             <button
                                 @click="
