@@ -27,37 +27,20 @@ const loginFormData = reactive({
             <div
                 class="text-center flex flex-col items-center justify-center pb-4"
             >
-                <h1 class="font-semibold text-xl opacity-80">Welcome Back</h1>
+                <h1 class="font-semibold text-xl opacity-80">
+                    Check Your Email
+                </h1>
                 <p class="opacity-70 text-sm mt-1">
-                    To access the system please login.
+                    We've sent you a reset link.
                 </p>
             </div>
-            <InputField
-                v-model="loginFormData.email"
-                inputType="text"
-                placeholder="Your email"
-                inputLabel="Email"
-            />
-            <InputField
-                v-model="loginFormData.password"
-                inputType="password"
-                placeholder="Your Password"
-                inputLabel="Password"
-            />
-            <RouterLink
-                class="text-end text-sm link link-primary"
-                :to="{ name: 'reset-password' }"
-            >
-                Forgot Password?
-            </RouterLink>
 
-            <PrimaryButton buttonName="Login" />
+            <PrimaryButton buttonName="Send Reset Link" />
         </div>
-        <div class="flex items-center gap-1">
-            <p class="opacity-75">Don't have account yet?</p>
-            <RouterLink :to="{ name: 'register' }">
-                <span class="link link-primary opacity-100">Sign up</span>
-            </RouterLink>
+
+        <div class="flex items-center gap-2">
+            <span class="opacity-70">Didn't get the email?</span>
+            <span class="link link-primary">Resend</span>
         </div>
     </section>
 </template>

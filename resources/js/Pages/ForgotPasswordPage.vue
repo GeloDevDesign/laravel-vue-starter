@@ -27,9 +27,11 @@ const loginFormData = reactive({
             <div
                 class="text-center flex flex-col items-center justify-center pb-4"
             >
-                <h1 class="font-semibold text-xl opacity-80">Welcome Back</h1>
+                <h1 class="font-semibold text-xl opacity-80">
+                   Reset Password
+                </h1>
                 <p class="opacity-70 text-sm mt-1">
-                    To access the system please login.
+                    Enter your email to get a reset link.
                 </p>
             </div>
             <InputField
@@ -38,26 +40,7 @@ const loginFormData = reactive({
                 placeholder="Your email"
                 inputLabel="Email"
             />
-            <InputField
-                v-model="loginFormData.password"
-                inputType="password"
-                placeholder="Your Password"
-                inputLabel="Password"
-            />
-            <RouterLink
-                class="text-end text-sm link link-primary"
-                :to="{ name: 'reset-password' }"
-            >
-                Forgot Password?
-            </RouterLink>
-
-            <PrimaryButton buttonName="Login" />
-        </div>
-        <div class="flex items-center gap-1">
-            <p class="opacity-75">Don't have account yet?</p>
-            <RouterLink :to="{ name: 'register' }">
-                <span class="link link-primary opacity-100">Sign up</span>
-            </RouterLink>
+            <PrimaryButton buttonName="Send Reset Link" />
         </div>
     </section>
 </template>

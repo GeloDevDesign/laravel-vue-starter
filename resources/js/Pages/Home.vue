@@ -14,7 +14,7 @@ import {
     SquarePen,
     EllipsisVertical,
 } from "lucide-vue-next";
-const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
+const { httpRequest, data, error, isLoading, isMakingRequest } = useApiRequest();
 
 defineProps({
     pageName: {

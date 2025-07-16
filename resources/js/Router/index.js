@@ -4,6 +4,9 @@ import Home from "@/Pages/Home.vue";
 import Test from "@/Pages/Test.vue";
 import ErrorPage from "@/Pages/ErrorPage.vue";
 import LoginPage from "@/Pages/LoginPage.vue";
+import RegisterPage from "@/Pages/RegisterPage.vue";
+import ForgotPasswordPage from "@/Pages/ForgotPasswordPage.vue";
+import EmailVerificationPage from "@/Pages/EmailVerificationPage.vue";
 
 const routes = [
     {
@@ -25,6 +28,24 @@ const routes = [
         path: "/login",
         name: "login",
         component: LoginPage,
+        meta: { guest: true },
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: RegisterPage,
+        meta: { guest: true },
+    },
+    {
+        path: "/email-verification",
+        name: "email-verification",
+        component: EmailVerificationPage,
+        meta: { guest: true },
+    },
+    {
+        path: "/reset-password",
+        name: "reset-password",
+        component: ForgotPasswordPage,
         meta: { guest: true },
     },
     {

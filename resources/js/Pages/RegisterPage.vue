@@ -8,8 +8,10 @@ import { useApiRequest } from "@/Composables/useApiRequest";
 const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
 
 const loginFormData = reactive({
+    name: "",
     email: "",
     password: "",
+    password_confirmation: "",
 });
 </script>
 
@@ -18,7 +20,7 @@ const loginFormData = reactive({
         class="flex justify-center flex-col gap-4 items-center h-screen bg-base-200"
     >
         <img
-            class="w-full max-w-10"
+            class="w-full max-w-10 mb-4"
             alt="Tailwind CSS Navbar component"
             src="https://img.freepik.com/free-vector/gradient-triangle-molecule-logo-technology-design_53876-116026.jpg?semt=ais_hybrid&w=740"
         />
@@ -33,6 +35,12 @@ const loginFormData = reactive({
                 </p>
             </div>
             <InputField
+                v-model="loginFormData.name"
+                inputType="text"
+                placeholder="Your name"
+                inputLabel="Name"
+            />
+            <InputField
                 v-model="loginFormData.email"
                 inputType="text"
                 placeholder="Your email"
@@ -41,22 +49,22 @@ const loginFormData = reactive({
             <InputField
                 v-model="loginFormData.password"
                 inputType="password"
-                placeholder="Your Password"
+                placeholder="Your password"
                 inputLabel="Password"
             />
-            <RouterLink
-                class="text-end text-sm link link-primary"
-                :to="{ name: 'reset-password' }"
-            >
-                Forgot Password?
-            </RouterLink>
+            <InputField
+                v-model="loginFormData.password_confirmation"
+                inputType="password"
+                placeholder="Your password confirmation"
+                inputLabel="Password Confirmation"
+            />
 
-            <PrimaryButton buttonName="Login" />
+            <PrimaryButton buttonName="Register" class="mt-2" />
         </div>
         <div class="flex items-center gap-1">
-            <p class="opacity-75">Don't have account yet?</p>
-            <RouterLink :to="{ name: 'register' }">
-                <span class="link link-primary opacity-100">Sign up</span>
+            <p class="opacity-75">Already have account yet?</p>
+            <RouterLink :to="{ name: 'login' }">
+                <span class="link link-primary opacity-100">Login</span>
             </RouterLink>
         </div>
     </section>

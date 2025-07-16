@@ -9,6 +9,8 @@ export function useApiRequest() {
     const isRequesting = ref(false);
     const data = ref([]);
     const error = ref(null);
+    const isMakingRequest = ref(false);
+    const selectedItem = ref(null);
 
     const httpRequest = async (url, method = "GET", body = null) => {
         if (method === "GET") isLoading.value = true;
@@ -47,7 +49,7 @@ export function useApiRequest() {
     };
 
     const httpPostRequest = async (url, payload) => {
-        isLoading.value = true;
+        isMakingRequest.value = true;
         try {
             const response = await api.post(url, payload);
             data.value.unshift(response.data.data);
@@ -55,14 +57,16 @@ export function useApiRequest() {
         } catch (err) {
             error.value = err;
         } finally {
-            isLoading.value = false;
+            isMakingRequest.value = false;
         }
     };
 
     const httpPutRequest = async (url, id, payload) => {
-        isLoading.value = true;
+        isMakingRequest.value = true;
+        selectedItem.value = id;
         try {
             const response = await api.put(url, payload);
+
             // Update the specific item in the array
             const index = data.value.findIndex((item) => item.id === id);
             if (index !== -1) {
@@ -75,18 +79,21 @@ export function useApiRequest() {
         } catch (err) {
             error.value = err;
         } finally {
-            isLoading.value = false;
+            isMakingRequest.value = false;
+            selectedItem.value = null;
         }
     };
 
     const httpDeleteRequest = async (url, id) => {
-        isLoading.value = true;
+        isMakingRequest.value = true;
+        selectedItem.value = id;
         try {
             await api.delete(url);
-            // const index = data.value.findIndex((item) => item.id === id);
-            // if (index !== -1) {
-            //     data.value.splice(index, 1); // Remove the item at the found index
-            // }
+            const response = await api.delete(url);
+            const index = data.value.findIndex((item) => item.id === id);
+            if (response.ok && index !== -1) {
+                data.value.splice(index, 1); // Remove the item at the found index
+            }
             data.value = data.value.filter((item) => item.id !== id);
             toastAlert(
                 response.data.message || "Deleted successfully",
@@ -95,7 +102,8 @@ export function useApiRequest() {
         } catch (err) {
             error.value = err;
         } finally {
-            isLoading.value = false;
+            isMakingRequest.value = false;
+            selectedItem.value = null;
         }
     };
 
@@ -108,6 +116,7 @@ export function useApiRequest() {
         data,
         error,
         isLoading,
-        isRequesting,
+        isMakingRequest,
+        selectedItem,
     };
 }

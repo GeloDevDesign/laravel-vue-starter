@@ -112,6 +112,10 @@ Route::post('/success', function (Request $request) {
     return response()->json(['message' => 'POST AXIOS', 'data' => $dummyAttendance], 200);
 });
 
+Route::delete('/success', function (Request $request) {
+    return response()->json(['message' => 'Data deleted successfully.'], 201);
+});
+
 
 Route::get('/error', function (Request $request) {
     return response()->json(['message' => 'ERROR AXIOS'], 422);

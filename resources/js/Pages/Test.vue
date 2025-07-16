@@ -12,14 +12,28 @@ import { useApiRequest } from "@/Composables/useApiRequest";
 import DefaultLayout from "../Layout/DefaultLayout.vue";
 import PageName from "@/Components/PageName.vue";
 import Filter from "@/Components/Filter.vue";
-const { httpRequest, data, error, isLoading, isRequesting } = useApiRequest();
+const {
+    httpRequest,
+    httpPostRequest,
+    httpDeleteRequest,
+    data,
+    error,
+    isLoading,
+    isMakingRequest,
+    selectedItem,
+} = useApiRequest();
 
 const formData = ref({});
+
+defineProps({
+    pageName: {
+        default: "No Page name",
+    },
+});
 
 onMounted(async () => {
     await httpRequest("/success");
 });
-
 </script>
 
 <template>
@@ -53,8 +67,8 @@ onMounted(async () => {
             class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
         >
             <button
-                @click="httpRequest('/success', 'POST')"
-                :disabled="isRequesting"
+                @click="httpPostRequest('/success')"
+                :disabled="isMakingRequest"
                 class="btn btn-primary"
             >
                 Test toast
@@ -68,6 +82,7 @@ onMounted(async () => {
                         <th>Date</th>
                         <th>Time in</th>
                         <th>Time out</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,6 +93,22 @@ onMounted(async () => {
                         <td>{{ item.date }}</td>
                         <td>{{ item.time_in }}</td>
                         <td>{{ item.time_out }}</td>
+                        <td>
+                            <button
+                                :disabled="selectedItem === item.id"
+                                class="btn btn-warning btn-sm"
+                                @click="httpDeleteRequest('/success', item.id)"
+                            >
+                                {{
+                                    selectedItem === item.id
+                                        ? "Deleting.."
+                                        : "Delete"
+                                }}<span
+                                    v-if="selectedItem === item.id"
+                                    class="loading loading-spinner loading-xs"
+                                ></span>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
