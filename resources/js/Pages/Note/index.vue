@@ -58,10 +58,11 @@ onMounted(async () => {
                     />
                 </div>
                 <Filter :filterItems="['Sci-fi', 'Athletic', 'Action']" />
-                <RouterLink :to="{ path: '/notes/create' }">
-                    <button class="btn btn-primary ml-4 join-item">
-                        <Plus /> Add Product
-                    </button>
+                <RouterLink
+                    class="btn btn-primary ml-4 join-item"
+                    :to="{ path: '/notes/create' }"
+                >
+                    <Plus /> Add Product
                 </RouterLink>
             </div>
         </div>
