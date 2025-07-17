@@ -24,8 +24,9 @@ defineProps({
 <template>
     <div v-if="!isOpen" class="tooltip tooltip-right" :data-tip="tooltipText">
         <RouterLink
-            class="btn btn-ghost   opacity-75"
-            exactActiveClass=" font-semibold bg-blue-100 text-primary opacity-100"
+            class="btn btn-ghost opacity-75"
+            exactActiveClass="font-semibold bg-blue-100 text-primary opacity-100"
+            activeClass="font-semibold bg-blue-100 text-primary opacity-100"
             :to="{ name: routeName }"
         >
             <slot name="icon"></slot>
@@ -36,7 +37,6 @@ defineProps({
         v-else
         class="btn btn-ghost w-full opacity-75"
         exactActiveClass=" font-semibold  bg-blue-100 text-primary opacity-100"
-        
         :to="{ name: routeName }"
     >
         <div class="flex justify-start items-center w-full gap-2">

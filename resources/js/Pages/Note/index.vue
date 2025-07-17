@@ -14,13 +14,11 @@ import PageName from "@/Components/PageName.vue";
 import Filter from "@/Components/Filter.vue";
 import { storeToRefs } from "pinia";
 import { useNoteStore } from "@/Stores/note";
-import { useRouter } from "vue-router";
 
 const noteStore = useNoteStore();
 const { getNotes, deleteNote } = noteStore;
 const { data, pagination, loading } = storeToRefs(noteStore);
 
-const router = useRouter();
 const formData = ref({});
 
 const handlePageChange = (page) => {
@@ -44,13 +42,10 @@ defineProps({
 onMounted(async () => {
     await getNotes("notes", 1, 10);
 });
-
-const goToCreateNote = () => {
-    router.push('/notes/create');
-};
 </script>
 
 <template>
+    <router-view />
     <DefaultLayout>
         <div class="w-full flex items-center justify-between mt-2 mb-4">
             <PageName :name="pageName" :description="description" />
@@ -63,12 +58,11 @@ const goToCreateNote = () => {
                     />
                 </div>
                 <Filter :filterItems="['Sci-fi', 'Athletic', 'Action']" />
-                <button
-                    class="btn btn-primary ml-4 join-item"
-                    @click="goToCreateNote"
-                >
-                    <Plus /> Add Product
-                </button>
+                <RouterLink :to="{ path: '/notes/create' }">
+                    <button class="btn btn-primary ml-4 join-item">
+                        <Plus /> Add Product
+                    </button>
+                </RouterLink>
             </div>
         </div>
 
@@ -76,6 +70,7 @@ const goToCreateNote = () => {
             class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 h-[71vh] min-h-[71vh]"
         >
             <table class="table">
+                <!-- head -->
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -103,7 +98,8 @@ const goToCreateNote = () => {
                             <div class="text-base-content/60">
                                 <p class="text-lg mb-2">No notes found</p>
                                 <p class="text-sm">
-                                    Try to refresh or start by adding your first note
+                                    Try to refresh or start by adding your first
+                                    note
                                 </p>
                             </div>
                         </td>
@@ -132,15 +128,11 @@ const goToCreateNote = () => {
                 </tbody>
             </table>
         </div>
-
         <Pagination
             v-if="pagination && pagination.total > 0"
             :pagination="pagination"
             @page-changed="handlePageChange"
             class="mt-4"
         />
-
-        <!-- Render child routes like NoteCreate.vue -->
-        <router-view />
     </DefaultLayout>
 </template>

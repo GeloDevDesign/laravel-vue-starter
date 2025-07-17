@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/Pages/Home.vue";
-import NotePage from "@/Pages/NotePage.vue";
 import ErrorPage from "@/Pages/ErrorPage.vue";
 import LoginPage from "@/Pages/LoginPage.vue";
 import RegisterPage from "@/Pages/RegisterPage.vue";
 import ForgotPasswordPage from "@/Pages/ForgotPasswordPage.vue";
 import EmailVerificationPage from "@/Pages/EmailVerificationPage.vue";
+
+import NotePage from "@/Pages/Note/index.vue";
+import NoteCreate from "@/Pages/Note/create.vue";
+
 import { useAuthStore } from "@/Stores/auth";
 
 const routes = [
@@ -21,16 +24,16 @@ const routes = [
         },
         meta: { auth: true },
     },
+
     {
         path: "/notes",
-        name: "notes",
-        component: NotePage,
-        props: {
-            pageName: "Notes",
-            description: "Your recent notes will show here",
-        },
-        meta: { auth: true },
+        children: [
+            { path: "", component: NotePage, name: "notes" },
+            { path: "create", component: NoteCreate, name: "create-note" },
+            { path: "edit", component: NoteCreate, name: "edit-note" },
+        ],
     },
+
     {
         path: "/login",
         name: "login",
