@@ -54,29 +54,6 @@ class User extends Authenticatable
     }
 
 
-    public function hasRole($roles)
-    {
-        return $this->roles()
-            ->whereIn('name', (array) $roles)
-            ->exists();
-    }
-
-
-    public function hasPermission($permissionName): bool
-    {
-        if ($this->permissions->contains('name', $permissionName)) {
-            return true;
-        }
-
-        foreach ($this->roles as $role) {
-            if ($role->permissions->contains('name', $permissionName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public  function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'role_user');
@@ -92,5 +69,32 @@ class User extends Authenticatable
     public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
+    }
+
+
+    public function hasRole($roles)
+    {
+        return $this->roles()
+            ->whereIn('name', (array) $roles)
+            ->exists();
+    }
+
+
+    public function hasPermission($permissionName): bool
+    {
+        // Check if the user directly has the permission
+        if ($this->permissions->contains('name', $permissionName)) {
+            return true;
+        }
+
+        // If not, check through each of the user's roles
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('name', $permissionName)) {
+                return true;
+            }
+        }
+
+        // If neither, return false means no permission
+        return false;
     }
 }
