@@ -16,6 +16,7 @@ export const useNoteStore = defineStore("noteStore", {
         errors: {},
         pagination: null,
         loading: false,
+        isRequesting: false,
     }),
 
     actions: {
@@ -51,12 +52,12 @@ export const useNoteStore = defineStore("noteStore", {
 
         async getNote(apiRoute) {
             this.errors = {};
-
+            this.isRequesting = true;
             try {
                 this.loading = true;
                 const { data } = await api.get(`/${apiRoute}`);
                 this.selectedItem = data;
-                this.data = data.note
+                this.data = data.note;
             } catch (error) {
                 router.push({
                     name: "error",
@@ -69,12 +70,13 @@ export const useNoteStore = defineStore("noteStore", {
                 });
             } finally {
                 this.loading = false;
+                this.isRequesting = false;
             }
         },
 
         async addNote(apiRoute, formData) {
             this.errors = {};
-
+            this.isRequesting = true;
             try {
                 const { data } = await api.post(`/${apiRoute}`, formData);
 
@@ -82,16 +84,18 @@ export const useNoteStore = defineStore("noteStore", {
                     data.message || "Product added successfully.",
                     "success"
                 );
-                router.push({ name: "home" });
+                router.push({ name: "notes" });
             } catch (error) {
                 this.errors = error.response?.data?.errors || {};
                 toastAlert("Failed to add product.", "error");
+            } finally {
+                this.isRequesting = false;
             }
         },
 
         async updateNote(apiRoute, formData) {
             this.errors = {};
-
+            this.isRequesting = true;
             try {
                 const { data } = await api.patch(`/${apiRoute}`, formData);
 
@@ -99,10 +103,12 @@ export const useNoteStore = defineStore("noteStore", {
                     data.message || "Product updated successfully.",
                     "success"
                 );
-                router.push({ name: "home" });
+                router.push({ name: "notes" });
             } catch (error) {
                 this.errors = error.response?.data?.errors || {};
                 toastAlert("Failed to update product.", "error");
+            } finally {
+                this.isRequesting = false;
             }
         },
 
@@ -110,7 +116,8 @@ export const useNoteStore = defineStore("noteStore", {
             this.errors = {};
 
             const { isConfirmed } = await Swal.fire({
-                title: `Delete ${item.title}?`,
+                title: "Confirm Deletion",
+                text: `Are you sure you want to permanently delete "${item}"?`,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, Delete",
@@ -125,8 +132,7 @@ export const useNoteStore = defineStore("noteStore", {
 
                 toastAlert("Note deleted successfully.", "success");
 
-                // Refresh data after deletion using current pagination
-                await this.getNotes("notes", this.pagination.current_page, this.pagination.per_page);
+                router.push({ name: "notes" });
             } catch (error) {
                 this.errors = error.response?.data?.errors || {};
                 toastAlert("Failed to delete note.", "error");

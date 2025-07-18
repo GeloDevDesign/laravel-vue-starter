@@ -10,10 +10,13 @@ import { useRoute } from "vue-router";
 
 const noteStore = useNoteStore();
 
-const { data, errors, loading } = storeToRefs(noteStore);
-const route = useRoute();
+const { data, errors, loading, isRequesting } = storeToRefs(noteStore);
 
 const props = defineProps({
+    id: {
+        type: [String, Number],
+        required: true,
+    },
     pageName: {
         type: String,
         default: "No Page Name",
@@ -30,7 +33,7 @@ const noteFormData = ref({
 });
 
 onMounted(async () => {
-    await noteStore.getNote(`notes/${route.params.id}`);
+    await noteStore.getNote(`notes/${props.id}`);
     noteFormData.value.title = data.value.title;
     noteFormData.value.body = data.value.body;
 });
@@ -39,9 +42,21 @@ id
 
 <template>
     <DefaultLayout>
-        <PageName :name="pageName" :description="description" />
+        <div class="flex items-center justify-between">
+            <PageName :name="pageName" :description="description" />
+            <button
+                @click="noteStore.deleteNote(`notes/${props.id}`, noteFormData.title)"
+                class="link-error link"
+            >
+                Delete Note
+            </button>
+        </div>
         <form @submit.prevent="" class="space-y-4 mt-4">
+            <div v-if="loading" class="skeleton h-10 w-full"></div>
+            <div v-if="loading" class="skeleton h-10 w-full"></div>
+
             <InputField
+                v-if="!loading"
                 v-model="noteFormData.title"
                 inputType="text"
                 placeholder="Note Title"
@@ -50,14 +65,19 @@ id
             />
 
             <InputField
+                v-if="!loading"
                 v-model="noteFormData.body"
                 inputType="text"
-                placeholder="Note Title"
-                inputLabel="Title"
+                placeholder="Note Body"
+                inputLabel="Body"
                 :error="errors.body?.[0]"
             />
 
-            <PrimaryButton buttonName="Login" />
+            <PrimaryButton
+                :disabled="isRequesting"
+                @click="noteStore.updateNote(`notes/${props.id}`, noteFormData)"
+                buttonName="Update Note"
+            />
         </form>
     </DefaultLayout>
 </template>

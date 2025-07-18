@@ -31,7 +31,7 @@ class NoteController extends Controller
         // }
 
 
-        $notes = $query->paginate($request->per_page ?? 10)
+        $notes = $query->latest()->paginate($request->per_page ?? 10)
             ->appends($request->query());
 
         return response()->json($notes);
