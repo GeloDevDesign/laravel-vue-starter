@@ -49,13 +49,14 @@ export const useNoteStore = defineStore("noteStore", {
             }
         },
 
-        async getINote(apiRoute) {
+        async getNote(apiRoute) {
             this.errors = {};
 
             try {
                 this.loading = true;
                 const { data } = await api.get(`/${apiRoute}`);
                 this.selectedItem = data;
+                this.data = data.note
             } catch (error) {
                 router.push({
                     name: "error",

@@ -34,9 +34,8 @@ const routes = [
                 component: NotePage,
                 name: "notes",
                 props: {
-                    pageName: "Notes Dashboard",
-                    description:
-                        "View and manage all your notes in one place. Easily keep track of your ideas and tasks.",
+                    pageName: "Dashboard",
+                    description: "Your system analytics here",
                 },
             },
             {
@@ -44,21 +43,18 @@ const routes = [
                 component: NoteCreate,
                 name: "create-note",
                 props: {
-                    pageName: "Create Note",
-                    description:
-                        "Start writing a new note to capture your thoughts, reminders, or plans.",
+                    pageName: "Dashboard",
+                    description: "Your system analytics here",
                 },
             },
             {
-                path: "edit/:id",
+                path: ":id",
                 component: NoteEdit,
                 name: "edit-note",
-                props: (route) => ({
-                    // id: route.params.id,
-                    pageName: "Edit Note",
-                    description:
-                        "Modify your existing note here. Make changes to keep your information up-to-date.",
-                }),
+                props: {
+                    pageName: "Note edit",
+                    description: "This part of the page you can update your note",
+                },
             },
         ],
     },

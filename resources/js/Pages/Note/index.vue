@@ -112,10 +112,7 @@ onMounted(async () => {
                         <td>{{ item.body }}</td>
                         <td>
                             <RouterLink
-                                :to="{
-                                    name: 'edit-note',
-                                    params: { id: item.id },
-                                }"
+                                :to="`/notes/${item.id}`"
                                 class="btn btn-ghost btn-sm"
                             >
                                 <SquarePen size="20" />

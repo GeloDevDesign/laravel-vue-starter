@@ -1,20 +1,25 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import DefaultLayout from "@/Layout/DefaultLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputField from "@/Components/InputField.vue";
 import PageName from "@/Components/PageName.vue";
-
+import { storeToRefs } from "pinia";
 import { useNoteStore } from "@/Stores/note";
+import { useRoute } from "vue-router";
 
 const noteStore = useNoteStore();
-const { addNote, errors } = noteStore;
 
-defineProps({
+const { data, errors, loading } = storeToRefs(noteStore);
+const route = useRoute();
+
+const props = defineProps({
     pageName: {
-        default: "No Page name",
+        type: String,
+        default: "No Page Name",
     },
     description: {
+        type: String,
         default: "No description for this page",
     },
 });
@@ -23,7 +28,14 @@ const noteFormData = ref({
     title: "",
     body: "",
 });
+
+onMounted(async () => {
+    await noteStore.getNote(`notes/${route.params.id}`);
+    noteFormData.value.title = data.value.title;
+    noteFormData.value.body = data.value.body;
+});
 </script>
+id
 
 <template>
     <DefaultLayout>
