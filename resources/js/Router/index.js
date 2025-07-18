@@ -9,6 +9,7 @@ import EmailVerificationPage from "@/Pages/EmailVerificationPage.vue";
 
 import NotePage from "@/Pages/Note/index.vue";
 import NoteCreate from "@/Pages/Note/create.vue";
+import NoteEdit from "@/Pages/Note/edit.vue";
 
 import { useAuthStore } from "@/Stores/auth";
 
@@ -28,9 +29,37 @@ const routes = [
     {
         path: "/notes",
         children: [
-            { path: "", component: NotePage, name: "notes" },
-            { path: "create", component: NoteCreate, name: "create-note" },
-            { path: "edit", component: NoteCreate, name: "edit-note" },
+            {
+                path: "",
+                component: NotePage,
+                name: "notes",
+                props: {
+                    pageName: "Notes Dashboard",
+                    description:
+                        "View and manage all your notes in one place. Easily keep track of your ideas and tasks.",
+                },
+            },
+            {
+                path: "create",
+                component: NoteCreate,
+                name: "create-note",
+                props: {
+                    pageName: "Create Note",
+                    description:
+                        "Start writing a new note to capture your thoughts, reminders, or plans.",
+                },
+            },
+            {
+                path: "edit/:id",
+                component: NoteEdit,
+                name: "edit-note",
+                props: (route) => ({
+                    // id: route.params.id,
+                    pageName: "Edit Note",
+                    description:
+                        "Modify your existing note here. Make changes to keep your information up-to-date.",
+                }),
+            },
         ],
     },
 

@@ -4,8 +4,8 @@ import {
     Menu,
     House,
     Plus,
-    SquarePen,
     EllipsisVertical,
+    SquarePen,
 } from "lucide-vue-next";
 
 import DefaultLayout from "@/Layout/DefaultLayout.vue";
@@ -111,19 +111,15 @@ onMounted(async () => {
                         <td>{{ item.title }}</td>
                         <td>{{ item.body }}</td>
                         <td>
-                            <button
-                                @click="
-                                    deleteNote(
-                                        `notes/${item.id}`,
-                                        item,
-                                        pagination?.current_page || 1,
-                                        pagination?.per_page || 10
-                                    )
-                                "
-                                class="btn btn-warning btn-sm"
+                            <RouterLink
+                                :to="{
+                                    name: 'edit-note',
+                                    params: { id: item.id },
+                                }"
+                                class="btn btn-ghost btn-sm"
                             >
-                                Delete
-                            </button>
+                                <SquarePen size="20" />
+                            </RouterLink>
                         </td>
                     </tr>
                 </tbody>
