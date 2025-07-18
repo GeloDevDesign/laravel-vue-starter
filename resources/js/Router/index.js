@@ -61,6 +61,7 @@ const routes = [
                 }),
             },
         ],
+        meta: { auth: true },
     },
 
     {

@@ -77,6 +77,7 @@ onMounted(async () => {
                         <th>No.</th>
                         <th>Title</th>
                         <th>Body</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -111,12 +112,21 @@ onMounted(async () => {
                         <td>{{ item.title }}</td>
                         <td>{{ item.body }}</td>
                         <td>
-                            <RouterLink
-                                :to="`/notes/${item.id}`"
-                                class="btn btn-ghost btn-sm"
+                            <div
+                                class="badge font-medium badge-soft badge-primary"
                             >
-                                <SquarePen size="20" />
-                            </RouterLink>
+                                Primary
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tooltip" data-tip="Edit Note">
+                                <RouterLink
+                                    :to="`/notes/${item.id}`"
+                                    class="btn btn-ghost text-info btn-xs"
+                                >
+                                    <SquarePen size="18" />
+                                </RouterLink>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
