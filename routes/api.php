@@ -6,8 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 
 // Public routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:5,1']);
+Route::post('/register', [AuthController::class, 'register'])->middleware(['throttle:5,1']);
+
 Route::post('/reset-password', [AuthController::class, 'reset_password']);
 Route::get('/verify-email/{user}', [AuthController::class, 'verify_email']);
 

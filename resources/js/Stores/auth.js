@@ -9,12 +9,13 @@ export const useAuthStore = defineStore("authStore", {
     state: () => ({
         user: null,
         errors: {},
+        isRequesting: false,
     }),
 
     actions: {
         async authenticate(apiRoute, formData) {
             this.errors = {};
-
+            this.isRequesting = true;
             try {
                 const response = await api.post(`/${apiRoute}`, formData);
 
@@ -38,6 +39,8 @@ export const useAuthStore = defineStore("authStore", {
                 }
 
                 this.errors = error.response?.data?.errors || {};
+            } finally {
+                this.isRequesting = false;
             }
         },
 

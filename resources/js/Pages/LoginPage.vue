@@ -4,11 +4,10 @@ import { RouterLink } from "vue-router";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputField from "@/Components/InputField.vue";
 
-
 import { useAuthStore } from "@/Stores/auth";
 import { storeToRefs } from "pinia";
 
-const { errors } = storeToRefs(useAuthStore());
+const { errors, isRequesting } = storeToRefs(useAuthStore());
 const authStore = useAuthStore();
 
 const loginFormData = reactive({
@@ -64,7 +63,7 @@ const loginFormData = reactive({
                 Forgot your password?
             </RouterLink>
 
-            <PrimaryButton buttonName="Login" />
+            <PrimaryButton :disabled="isRequesting" buttonName="Login" />
         </form>
 
         <div class="flex items-center gap-1 text-sm">

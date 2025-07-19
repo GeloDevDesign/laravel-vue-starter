@@ -1,24 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-import Home from "@/Pages/Home.vue";
-import ErrorPage from "@/Pages/ErrorPage.vue";
-import LoginPage from "@/Pages/LoginPage.vue";
-import RegisterPage from "@/Pages/RegisterPage.vue";
-import ForgotPasswordPage from "@/Pages/ForgotPasswordPage.vue";
-import EmailVerificationPage from "@/Pages/EmailVerificationPage.vue";
-
-import NotePage from "@/Pages/Note/index.vue";
-import NoteCreate from "@/Pages/Note/create.vue";
-import NoteEdit from "@/Pages/Note/edit.vue";
-
 import { useAuthStore } from "@/Stores/auth";
 
 const routes = [
     {
         path: "/",
         name: "home",
-        component: Home,
-        props: true,
+        component: () => import("@/Pages/Home.vue"),
         props: {
             pageName: "Dashboard",
             description: "Your system analytics here",
@@ -31,27 +18,29 @@ const routes = [
         children: [
             {
                 path: "",
-                component: NotePage,
+                component: () => import("@/Pages/Note/index.vue"),
                 name: "notes",
                 props: {
                     pageName: "Notes Dashboard",
                     description:
                         "View and manage all your notes in one place. Easily keep track of your ideas and tasks.",
                 },
+                meta: { auth: true },
             },
             {
                 path: "create",
-                component: NoteCreate,
+                component: () => import("@/Pages/Note/create.vue"),
                 name: "create-note",
                 props: {
                     pageName: "Create Note",
                     description:
                         "Start writing a new note to capture your thoughts, reminders, or plans.",
                 },
+                meta: { auth: true },
             },
             {
                 path: ":id",
-                component: NoteEdit,
+                component: () => import("@/Pages/Note/edit.vue"),
                 name: "edit-note",
                 props: (route) => ({
                     id: route.params.id,
@@ -67,38 +56,38 @@ const routes = [
     {
         path: "/login",
         name: "login",
-        component: LoginPage,
+        component: () => import("@/Pages/LoginPage.vue"),
         meta: { guest: true },
     },
     {
         path: "/register",
         name: "register",
-        component: RegisterPage,
+        component: () => import("@/Pages/RegisterPage.vue"),
         meta: { guest: true },
     },
     {
         path: "/email-verification",
         name: "email-verification",
-        component: EmailVerificationPage,
+        component: () => import("@/Pages/EmailVerificationPage.vue"),
         meta: { auth: true },
     },
     {
         path: "/reset-password",
         name: "reset-password",
-        component: ForgotPasswordPage,
+        component: () => import("@/Pages/ForgotPasswordPage.vue"),
         meta: { guest: true },
     },
     {
         path: "/error/:message/:status",
         name: "error",
-        component: ErrorPage,
+        component: () => import("@/Pages/ErrorPage.vue"),
         props: true,
         meta: { guest: true },
     },
     {
         path: "/:pathMatch(.*)*",
         name: "not-found",
-        component: ErrorPage,
+        component: () => import("@/Pages/ErrorPage.vue"),
         props: { status: 404, message: "Page not found." },
     },
 ];
@@ -113,15 +102,11 @@ router.beforeEach(async (to, from) => {
     await authStore.getUser();
 
     if (!authStore.user && to.meta.auth) {
-        await authStore.getUser();
+        return { name: "login" };
     }
 
     if (authStore.user && to.meta.guest) {
         return { name: "home" };
-    }
-
-    if (!authStore.user && to.meta.auth) {
-        return { name: "login" };
     }
 });
 

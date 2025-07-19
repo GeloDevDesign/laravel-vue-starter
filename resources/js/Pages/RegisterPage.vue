@@ -8,7 +8,7 @@ import { useApiRequest } from "@/Composables/useApiRequest";
 import { useAuthStore } from "@/Stores/auth";
 import { storeToRefs } from "pinia";
 
-const { errors } = storeToRefs(useAuthStore());
+const { errors,isRequesting } = storeToRefs(useAuthStore());
 const authStore = useAuthStore();
 
 const registerFormData = reactive({
@@ -51,12 +51,14 @@ const registerFormData = reactive({
                 inputType="text"
                 placeholder="Your name"
                 inputLabel="Name"
+                :error="errors.name?.[0]"
             />
             <InputField
                 v-model="registerFormData.email"
                 inputType="text"
                 placeholder="Your email"
                 inputLabel="Email"
+                :error="errors.email?.[0]"
             />
             <InputField
                 v-model="registerFormData.password"
@@ -69,9 +71,10 @@ const registerFormData = reactive({
                 inputType="password"
                 placeholder="Confirm your password"
                 inputLabel="Confirm Password"
+                :error="errors.password?.[0]"
             />
 
-            <PrimaryButton buttonName="Register" class="mt-2" />
+            <PrimaryButton :disabled="isRequesting"  buttonName="Register" class="mt-2" />
         </form>
 
         <div class="flex items-center gap-1 text-sm">
