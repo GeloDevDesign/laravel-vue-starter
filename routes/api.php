@@ -19,11 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    // NoteController CRUD with policy enforcement
     Route::apiResource('notes', NoteController::class);
 
-    // OR if you want to use specific policy middleware
+  
     // Route::get('/notes/{note}', [NoteController::class, 'show'])->middleware('can:view,note');
     // Route::put('/notes/{note}', [NoteController::class, 'update'])->middleware('can:modify,note');
     // Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->middleware('can:modify,note');
