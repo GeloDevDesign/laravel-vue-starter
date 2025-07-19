@@ -19,6 +19,8 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+    // FOR RBAC 
     public function register_user(Request $request)
     {
         $validated = $request->validate([
@@ -58,10 +60,80 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    // STORE ATTENDANCE
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'event_id' => 'required|exists:events,id',
+            'status' => 'required|in:present,absent',
+        ]);
+
+        // Check if already attended
+        $existing = Attendance::where('user_id', $request->user()->id)
+            ->where('event_id', $validated['event_id'])
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'message' => 'Attendance already recorded.',
+                'data' => $existing
+            ], 409);
+        }
+
+        $attendance = $user->attendance()->create([
+            'event_id' => $validated['event_id'],
+            'status' => $validated['status'],
+            'checked_in_at' => now(),
+        ])
+       
+
+        return response()->json([
+            'message' => 'Attendance recorded successfully.',
+            'data' => $attendance
+        ], 201);
     }
+
+
+   public function register_event(Request $request)
+{
+    $validated = $request->validate([
+        'event_id' => 'required|exists:events,id',
+        'status' => 'required|string',
+    ]);
+
+    $isUserRegister = Attendance::where('event_id', $validated['event_id'])
+        ->where('user_id', $request->user()->id)
+        ->exists();
+
+    if ($isUserRegister) {
+        return response()->json(['message' => 'You already registered to this event'], 400);
+    }
+
+    // OPTIONAL FOR MULTIPLE REGISTER
+//     $pivotData = [];
+// foreach ($validated['event_ids'] as $eventId) {
+//     $pivotData[$eventId] = [
+//         'status' => $validated['status'],
+//         'registered_at' => now(),
+//     ];
+// }
+
+
+    $request->user()->register()->syncWithoutDetaching([
+        $validated['event_id'] => [
+            'status' => $validated['status'],
+            'registered_at' => now(),
+        ]
+    ]);
+
+    return response()->json([
+        'message' => 'Registered to the event successfully.'
+    ], 201);
+}
+
+
+
 
     /**
      * Display the specified resource.

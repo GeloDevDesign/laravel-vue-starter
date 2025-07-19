@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -57,6 +58,12 @@ class User extends Authenticatable
     public  function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+
+    public function register(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class,'register');
     }
 
 
