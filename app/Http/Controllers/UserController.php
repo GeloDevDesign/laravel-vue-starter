@@ -96,7 +96,7 @@ class UserController extends Controller
 
 
    public function register_event(Request $request)
-{
+    {
     $validated = $request->validate([
         'event_id' => 'required|exists:events,id',
         'status' => 'required|string',
