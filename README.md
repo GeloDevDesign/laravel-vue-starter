@@ -31,7 +31,50 @@ This outlines the step-by-step process for deploying the application on a Hostin
 
 1. Compile your frontend assets for production on your local machine.
 
-```javascript
+```
 npm run build
 ```
+-This command generates optimized files inside the public/build directory.
+-Asset Check: Ensure the manifest.json file is inside the public/build folder.
+-Cleanup: Remove the public/hot file before deployment, as it is only used for local development.
+
+2. Environment Setup (Server)
+-Upload your entire project to the server (typically to a folder one level above the public_html).
+-Update the .env file on the server with production details, including the database configuration and setting APP_ENV=production.
+
+3. Configure .htaccess (Server Root)
+Place the following configuration in a .htaccess file in your project's root directory (where your app, bootstrap, and public folders reside). This is essential for routing requests to the Laravel public directory.
+
+```
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks
+RewriteEngine On
+
+# Prevents the public folder from being visible in the URL path
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Handle physical files/directories if they exist outside /public
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Route all requests to public/index.php
+RewriteRule ^(.*)$ public/$1 [L]
+# Fallback rule for the root URL
+RewriteRule ^(/)?$ public/index.php [L]
+</IfModule>
+```
+
+4. Setup Storage Link & Cache (SSH)
+
+Use SSH to run the following commands in your project's root directory to clear cache and establish the symlink for file storage.
+
+1. Clear Caches: Clears all compiled routes, views, and configuration.
+```
+php artisan optimize:clear
+```
+2. Create Storage Symlink: Creates the necessary link for uploaded public files (e.g., user avatars, images) to be accessible via public/storage.
+```
+ln -s ../storage/app/public public/storage
+```
+
 
