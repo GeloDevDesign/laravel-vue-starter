@@ -31,12 +31,7 @@ This outlines the step-by-step process for deploying the application on a Hostin
 
 1. Compile your frontend assets for production on your local machine.
 
-```python
-# This is a Python code block with syntax highlighting
-def add_numbers(a, b):
-    return a + b
-
-result = add_numbers(1, 2)
-print(result)
+```javascript
+npm run build
 ```
 
