@@ -24,3 +24,19 @@ A full-stack starter kit using Laravel, Vue 3, Tailwind CSS, DaisyUI, and Pinia,
 | Laravel (PHP)   | Vue 3          | Tailwind CSS   | Vite           |
 |                 | Pinia          | DaisyUI        | Axios          |
 |                 | Vue Router     |                |                |
+
+## ☁️ Hostinger Deployment Process
+
+This outlines the step-by-step process for deploying the application on a Hostinger shared hosting environment, ensuring correct path resolution and asset linking.
+
+1. Compile your frontend assets for production on your local machine.
+
+```python
+# This is a Python code block with syntax highlighting
+def add_numbers(a, b):
+    return a + b
+
+result = add_numbers(1, 2)
+print(result)
+```
+
